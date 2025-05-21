@@ -14,5 +14,8 @@
     "astro": "^5.7.5",
     "mathjs": "^14.4.0",
     "sass": "^1.87.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.13"
   }
 }
