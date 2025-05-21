@@ -1,11 +1,23 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Window from '../components/Window.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const modules = import.meta.glob('../components/utils/*.astro', { eager: true });
+
+const utils = Object.entries(modules).map(([path, mod]) => {
+    const metadata = mod.metadata ?? {};
+    return {
+        id: metadata.id ?? 'unknown',
+        name: metadata.name ?? 'Unnamed',
+        Component: mod.default,
+    };
+});
 ---
 
 <Layout>
-	<Welcome />
+    {utils.map(({ id, name, Component }) => (
+        <Window id={id} name={name}>
+            <Component/>
+        </Window>
+    ))}
 </Layout>
