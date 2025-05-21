@@ -1,0 +1,37 @@
+@use "sass:color";
+
+$accent: #EFCFEF;
+$wall: #F9E2FD;
+$fg: #3c424d;
+$bg: #FDF7FD;
+
+$util_bg: $bg;
+$util_bg_high: #FDFDFD;
+$util_bg_highest: #FDEFFD;
+$util_border: #F6E0F8;
+$util_fg: #4D21CB;
+
+
+
+$close: #f38ba8;
+$maximize: #a6e3a1;
+
+$bar_accent: #F3E1F7;
+$bar_bg: linear-gradient(to right, $bar_accent 70%, color.adjust($bar_accent, $lightness: 2%));
+$bar_fg: #4D21CB;
+
+$logo: $accent;
+
+$nav_bg: $bar_accent;
+$nav_fg: $bar_fg;
+$nav_accent: color.adjust($nav_bg, $lightness: -10%);
+$nav_border: $nav_accent;
+
+$window_bar_bg: linear-gradient(to right, $accent 70%, color.adjust($accent, $lightness: 10%));
+$window_bar_fg: #4D21CB;
+
+$window_border: #90F3E1;
+$window_outline: $window_bar_fg;
+
+$window_bg: $bg;
+$window_fg: $fg;

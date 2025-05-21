@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="49.730782mm"
+   height="49.730785mm"
+   viewBox="0 0 49.730782 49.730785"
+   version="1.1"
+   id="svg1"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="3.1288353"
+     inkscape:cx="-7.670586"
+     inkscape:cy="434.50674"
+     inkscape:window-width="2540"
+     inkscape:window-height="1017"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:export-bgcolor="#f8e2fdff">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="49.730782"
+       height="49.730785"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-7.6630894,-75.206659)">
+    <rect
+       style="fill:#000000;fill-opacity:0;stroke-width:0.607633"
+       id="rect1-3"
+       width="49.730782"
+       height="49.730782"
+       x="75.206657"
+       y="-57.393871"
+       transform="rotate(90)"
+       inkscape:export-filename="rect.svg"
+       inkscape:export-xdpi="96.350441"
+       inkscape:export-ydpi="96.350441" />
+    <rect
+       style="fill:#ccecfb;fill-opacity:1;stroke-width:0.395987"
+       id="rect1-3-5"
+       width="32.408886"
+       height="32.408886"
+       x="77.558289"
+       y="31.556074"
+       transform="rotate(45)"
+       inkscape:export-filename="rect.svg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <rect
+       style="fill:#f8ebfd;fill-opacity:1;stroke-width:0.347982"
+       id="rect1-3-2"
+       width="28.480024"
+       height="28.480024"
+       x="79.52272"
+       y="33.520504"
+       transform="rotate(45)"
+       inkscape:export-filename="rect.svg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+  </g>
+</svg>

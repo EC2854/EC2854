@@ -1,0 +1,238 @@
+---
+const { name, id } = Astro.props;
+---
+<div id={id} class="window">
+    <div>
+        <header>
+            <div>
+            <h1>{name}</h1>
+            <nav>
+                <button id={`${id}-maximize`} class="button-maximize">fullscreen</button>
+                <button id={`${id}-close`} class="button-close">close</button>
+            </nav>
+            </div>
+        </header>
+        <section>
+            <slot />
+        </section>
+    </div>
+</div>
+
+<style lang="scss">
+    @use "../styles/_animations.scss";
+    @use "../styles/_colors.scss";
+    @use "../styles/_fonts.scss";
+    @use "sass:color";
+
+    .window {
+        position: fixed;
+        top: 100px;
+        left: 100px;
+        width: 640px;
+        height: 480px;
+        border: 2px solid colors.$window_outline;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        box-sizing: border-box;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: .1s;
+        pointer-events: none;
+        display: flex;
+        &.visible {
+            pointer-events: all;
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0s;
+        }
+        & > div {
+            display: flex;
+            flex-grow: 1;
+
+            flex-direction: column;
+            border: 5px solid colors.$window_border;
+        }
+    }
+    header {
+        border-bottom: 5px solid colors.$window_border;
+        & > div {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            background: colors.$window_bar_bg;
+            border: 2px solid colors.$window_outline;
+            color: colors.$window_bar_fg;
+            padding: .2rem .5rem;
+            font-weight: 600;
+            user-select: none;
+            & > * {
+                display: flex;
+                align-items: center;
+            }
+            & > h1 {
+                font-size: 1.5rem;
+                margin: 0;
+                pointer-events: none;
+            }
+            & > nav {
+                margin-left: auto;
+                & > button {
+                    font-family: 'Material Icons', sans-serif;
+                    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+                    font-weight: 900;
+
+                    margin-left: .4rem;
+                    height: 1.8rem;
+                    width: 1.8rem;
+                    transition: .1s;
+                    cursor: pointer;
+                    &:hover {
+                        animation: bounce 0.5s ease forwards;
+                    }
+                }
+                & > .button- {
+                    &maximize {
+                        background-color: colors.$maximize;
+                        border: 2px solid color.adjust(colors.$maximize, $lightness: -30%);
+                        color: color.adjust(colors.$maximize, $lightness: -30%);
+                        &:hover {
+                            background-color: color.adjust(colors.$maximize, $lightness: 10%);
+                            border: 2px solid color.adjust(colors.$maximize, $lightness: -10%);
+                            color: color.adjust(colors.$maximize, $lightness: -10%);
+                        }
+                    }
+                    &close {
+                        background-color: colors.$close;
+                        border: 2px solid color.adjust(colors.$close, $lightness: -30%);
+                        color: color.adjust(colors.$close, $lightness: -30%);
+                        &:hover {
+                            background-color: color.adjust(colors.$close, $lightness: 10%);
+                            border: 2px solid color.adjust(colors.$close, $lightness: -10%);
+                            color: color.adjust(colors.$close, $lightness: -10%);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    section {
+        border: 2px solid colors.$window_outline;
+        padding: 1rem;
+        overflow-y: scroll;
+        background-color: colors.$window_bg;
+        color: colors.$window_fg;
+        height: 100%;
+    }
+</style>
+
+<script is:inline define:vars={{ id }}>
+    const el = document.getElementById(`${id}`);
+    const header = el.querySelector('header');
+
+    let offsetX = 0;
+    let offsetY = 0;
+    let isDragging = false;
+
+    const MIN_WIDTH = 320;
+    const MIN_HEIGHT = 120;
+
+    header.style.cursor = 'move';
+
+    function setZIndex(className, zIndex) {
+        const divs = document.querySelectorAll(`div.${className}`);
+        for (let i = 0; i < divs.length; i++) {
+            divs[i].style.zIndex = zIndex.toString();
+        }
+    }
+
+    const onMouseDown = (e) => {
+        isDragging = true;
+
+        const rect = el.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+
+        setZIndex("window", 1);
+        el.style.zIndex = 2;
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    };
+
+    const onMouseMove = (e) => {
+        if (isDragging) {
+            el.style.left = `${e.clientX - offsetX}px`;
+            el.style.top = `${e.clientY - offsetY}px`;
+        } else if (isResizing) {
+            const dx = e.clientX - resizeStartX;
+            const dy = e.clientY - resizeStartY;
+            const newWidth = resizeStartWidth + dx;
+            const newHeight = resizeStartHeight + dy;
+
+            if (newWidth >= MIN_WIDTH) {
+                el.style.width = `${newWidth}px`;
+            }
+
+            if (newHeight >= MIN_HEIGHT) {
+                el.style.height = `${newHeight}px`;
+            }
+        }
+    };
+
+    const onMouseUp = () => {
+        isDragging = false;
+        isResizing = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    let isResizing = false;
+    let resizeStartX = 0;
+    let resizeStartY = 0;
+    let resizeStartWidth = 0;
+    let resizeStartHeight = 0;
+
+    const resizer = document.createElement("div");
+    resizer.style.width = "20px";
+    resizer.style.height = "20px";
+    resizer.style.position = "absolute";
+    resizer.style.right = "0";
+    resizer.style.bottom = "0";
+    resizer.style.cursor = "se-resize";
+    resizer.style.background = "transparent";
+    el.appendChild(resizer);
+
+    resizer.addEventListener("mousedown", (e) => {
+        e.stopPropagation();
+        isResizing = true;
+        resizeStartX = e.clientX;
+        resizeStartY = e.clientY;
+        resizeStartWidth = el.offsetWidth;
+        resizeStartHeight = el.offsetHeight;
+
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseup", onMouseUp);
+    });
+
+    header.addEventListener('mousedown', onMouseDown);
+    document.getElementById(`${id}-close`).addEventListener("click", () => close_window(id));
+
+    function close_window(id) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.toggle("visible");
+        }
+    }
+    document.getElementById(`${id}-maximize`).addEventListener("click", () => maximize_window(id));
+
+    function maximize_window(id) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.style.left = 0;
+            el.style.top = 0;
+            el.style.width = "100vw";
+            el.style.height = `calc(100vh - 48px)`; // TODO replace this hardcoded 48px
+        }
+    }
+</script>

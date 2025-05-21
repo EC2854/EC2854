@@ -1,0 +1,222 @@
+---
+    console.log(`id: `);
+export const metadata = {
+    id: 'calculator',
+    name: 'Calculator',
+    icon: 'calculate',
+};
+---
+
+<div class="calculator">
+    <div>
+        <input placeholder=":3" type="text" id="calc-input">
+        <div>
+            <p id="calc-result"></p>
+            <button id="calc-expand">keyboard_double_arrow_down</button>
+        </div>
+    </div>
+    <div id="calc-buttons">
+    </div>
+</div>
+
+<style lang="scss" is:global> // is:global is needed for js buttons
+    @use "../../styles/_animations.scss";
+    @use "../../styles/_colors.scss";
+    @use "../../styles/_fonts.scss";
+    @use "sass:color";
+    .calculator {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        & > #calc-buttons {
+            width: 100%;
+            display: none;
+            align-items: center;
+            align-content: center;
+            height: calc(100% - 6em);
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            padding: .8em 0em;
+            gap: .4em;
+            &.visible {
+                display: grid;
+            }
+            & > button {
+                font-weight: bold;
+                border: 2px solid colors.$util_border;
+                background-color: colors.$util_bg_highest;
+                color: colors.$util_fg;
+                cursor: pointer;
+                width: 100%;
+                height: 100%;
+                font-size: 2em;
+                user-select: none;
+                transition: .3s;
+                &:hover {
+                    background-color: color.adjust(colors.$util_bg_highest, $lightness: 5%)
+                }
+            }
+        }
+        & > div {
+            width: 70%;
+            transition: .2s;
+            &.full {
+                width: 100%;
+                & > input {
+                    height: 4em;
+                }
+                & > div {
+                    height: 3em;
+                }
+            }
+            & > input {
+                height: 3em;
+                width: 100%;
+                border: none;
+                outline: none;
+                font-size: 1.2em;
+                padding: .2em 1em;
+                box-sizing: border-box;
+                border: 2px solid colors.$util_border;
+                background-color: colors.$util_bg_high;
+                color: colors.$util_fg;
+            }
+            & > div {
+                border: 2px solid colors.$util_border;
+                border-top: none;
+                box-sizing: border-box;
+                padding: .2em 1em;
+                width: 100%;
+                height: 2.5em;
+                font-size: 1.2em;
+                background-color: colors.$util_bg_high;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                & > p {
+                    width: 100%;
+                    color: colors.$util_fg;
+                    font-weight: bold;
+                    &.error {
+                        color: color.adjust(colors.$close, $lightness: -10%);
+                    }
+                }
+                & > button {
+                    font-family: 'Material Icons', sans-serif;
+                    height: 24px;
+                    width: 24px;
+                    border: 2px solid colors.$util_border;
+                    background-color: colors.$util_bg_highest;
+                    user-select: none;
+                    cursor: pointer;
+                    transition: .2s;
+                    &:hover {
+                        animation: down 0.5s ease forwards;
+                        background-color: color.adjust(colors.$util_bg_highest, $lightness: 5%)
+                    }
+                    &.up:hover {
+                        animation: up 0.5s ease forwards;
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<script>
+    import { evaluate } from "mathjs";
+
+    let input = document.getElementById('calc-input') as HTMLInputElement;
+    let result = document.getElementById('calc-result') as HTMLElement;
+    let container = document.getElementById('calculator') as HTMLElement;
+    let expand = document.getElementById('calc-expand') as HTMLElement;
+    let button_box = document.getElementById('calc-buttons') as HTMLElement;
+
+    type ButtonConfig = {
+        id: string;
+        label: string;
+        value: string;
+        icon?: boolean;
+    };
+    const buttons: ButtonConfig[] = [
+        { label: 'C', value: 'clear' },
+        { label: '(', value: '(' },
+        { label: ')', value: ')' },
+        { label: 'backspace', value: 'delete', icon: true },
+        { label: '7', value: '7' },
+        { label: '8', value: '8' },
+        { label: '9', value: '9' },
+        { label: '*', value: '*' },
+        { label: '4', value: '4' },
+        { label: '5', value: '5' },
+        { label: '6', value: '6' },
+        { label: '/', value: '/' },
+        { label: '1', value: '1' },
+        { label: '2', value: '2' },
+        { label: '3', value: '3' },
+        { label: '-', value: '-' },
+        { label: '0', value: '0' },
+        { label: '.', value: '.' },
+        { label: 'superscript', value: '^2', icon: true },
+        { label: '+', value: '+' },
+    ];
+
+    buttons.forEach(({label, value, icon }) => {
+        const button = document.createElement('button');
+        button.textContent = label;
+
+        if (icon) {
+            button.style.fontFamily = 'Material Icons';
+            button.style.fontWeight = 'Normal';
+        }
+        button.addEventListener('click', () => {
+            if (value === 'clear') {
+                input.value = '';
+            } else if (value === 'delete') {
+              input.value = input.value.slice(0, -1);
+            } else {
+                input.value += value;
+            }
+            calculate(input.value)
+        });
+        button_box?.appendChild(button);
+    });
+
+    function toggleButtons(selector: string): void {
+        const el = document.querySelector(selector);
+        el?.classList.toggle("visible");
+        const isVisible = el?.classList.contains("visible");
+        const input_div = document.querySelector(".calculator div") as HTMLElement;
+        if (isVisible) {
+            expand.innerHTML = "keyboard_double_arrow_up";
+            expand.classList.add("up");
+            input_div.classList.add("full");
+        } else {
+            expand.innerHTML = "keyboard_double_arrow_down";
+            expand.classList.remove("up");
+            input_div.classList.remove("full");
+        }
+    }
+    function calculate(input: string) {
+        input = input.toString().trim();
+        if (input == "") {
+            result.innerHTML = "";
+            return;
+        }
+        try {
+            const res = evaluate(input).toString();
+            result.innerHTML = res;
+            result.classList.remove("error");
+
+        } catch (err) {
+            result.innerHTML = "・_・";
+            result.classList.add("error");
+        }
+    }
+
+    input.addEventListener("input", (event) => { calculate(input.value) } );
+    expand.addEventListener("click", () => toggleButtons("#calc-buttons"));
+</script>

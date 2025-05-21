@@ -1,0 +1,199 @@
+---
+const modules = import.meta.glob('../components/utils/*.astro', { eager: true });
+
+const utils = Object.entries(modules).map(([path, mod]) => {
+    const metadata = mod.metadata ?? {};
+    return {
+        id: metadata.id ?? 'unknown',
+        name: metadata.name ?? 'Unnamed',
+        icon: metadata.icon ?? 'apps',
+    };
+});
+---
+
+<div class="bar">
+    <nav>
+        <ul>
+            {utils.map(({ id, name, icon }) => (
+                <li>
+                    <button toggle-id={id}>
+                        <span>{icon}</span>
+                        {name}
+                    </button>
+                </li>
+            ))}
+        </ul>
+    </nav>
+    <header>
+        <button id="logo">
+            <span>rocket_launch</span>
+            <p> Start</p>
+        </button>
+        <button id="clock"></button>
+    </header>
+</div>
+
+<style lang="scss">
+    @use "../styles/_animations.scss";
+    @use "../styles/_colors.scss";
+    @use "../styles/_fonts.scss";
+    @use "sass:color";
+
+    .bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        pointer-events: none;
+    }
+    header {
+        pointer-events: all;
+        background: colors.$bar_bg;
+        color: colors.$bar_fg;
+        border-top: 3px solid color.adjust(colors.$bar_accent, $lightness: -10%);
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        height: 48px;
+        box-sizing: border-box;
+        z-index: 10;
+        font-weight: 600;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        & > * {
+            display: flex;
+            align-items: center;
+        }
+        & > #logo {
+            height: 32px;
+            padding: 0 .8rem;
+            font-size: 1.05rem;
+            box-sizing: border-box;
+
+            cursor: pointer;
+            background-color: colors.$logo;
+            color: color.adjust(colors.$logo, $lightness: -20%);
+            border: 2px solid color.adjust(colors.$logo, $lightness: -10%);
+            box-shadow: rgba(0, 0, 0, .1) 1.95px 1.95px 2.6px;
+            &:hover {
+                animation: bounce 0.5s ease forwards;
+                background-color: color.adjust(colors.$logo, $lightness: 10%);
+                color: color.adjust(colors.$logo, $lightness: -10%);
+                border: 2px solid color.adjust(colors.$logo, $lightness: -5%);
+            }
+            & > span {
+                font-family: 'Material Icons', sans-serif;
+                font-size: 1.1rem;
+            }
+        }
+        & > #clock {
+            cursor: pointer;
+            margin-left: auto;
+            height: 32px;
+            padding: 0 .8rem;
+            font-size: 1.05rem;
+            box-sizing: border-box;
+            box-shadow: rgba(0, 0, 0, .1) 1.95px 1.95px 2.6px;
+
+            background-color: colors.$logo;
+            color: color.adjust(colors.$logo, $lightness: -20%);
+            border: 2px solid color.adjust(colors.$logo, $lightness: -10%);
+            &:hover {
+                animation: bounce 0.5s ease forwards;
+                background-color: color.adjust(colors.$logo, $lightness: 10%);
+                color: color.adjust(colors.$logo, $lightness: -10%);
+                border: 2px solid color.adjust(colors.$logo, $lightness: -5%);
+            }
+        }
+    }
+    nav {
+        width: 360px;
+        height: 50vh;
+        background: colors.$nav_bg;
+        color: colors.$nav_fg;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: .2s;
+        padding: .2em 1em;
+        border: 3px solid color.adjust(colors.$bar_accent, $lightness: -10%);
+        box-shadow: 0px -3px 5px rgba(0, 0, 0, 0.1);
+        border-bottom: none;
+        &.visible {
+            pointer-events: all;
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0s;
+        }
+        & > ul {
+            padding: 0;
+            list-style-type: none;
+            & > li {
+                & > button {
+                    width: 100%;
+                    color: colors.$nav_fg;
+                    background: none;
+                    border: none;
+                    margin: .2em 0;
+                    transition: .16s;
+                    font-size: 1.3em;
+                    text-align: left;
+                    padding: .2em .8em;
+                    cursor: pointer;
+                    & > span {
+                        font-family: 'Material Icons', sans-serif;
+                        color: color.adjust(colors.$nav_accent, $lightness: -10%);
+                    }
+                    &:hover{
+                        border-left: .8em solid color.adjust(colors.$nav_accent, $lightness: -10%);
+                        color: color.adjust(colors.$nav_accent, $lightness: -20%);
+                        background: linear-gradient(to right, colors.$nav_accent , colors.$nav_bg);
+                        & > span {
+                            color: color.adjust(colors.$nav_accent, $lightness: -10%);
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<script>
+    const clock = document.getElementById("clock") as HTMLButtonElement | null;
+    const logo = document.getElementById("logo") as HTMLButtonElement | null;
+    const nav = document.querySelector(".bar nav") as HTMLElement | null;
+
+    function toggleVisibility(selector: string): void {
+        const el = document.querySelector(selector);
+        el?.classList.toggle("visible");
+    }
+
+
+    logo?.addEventListener("click", () => toggleVisibility(".bar nav")); // TODO replace this with nav somehow
+    if (nav) {
+        const buttons = nav.querySelectorAll<HTMLButtonElement>('button');
+        buttons.forEach(button => {
+            const id = button.getAttribute('toggle-id') as String;
+            if (id) {
+                button.addEventListener("click", () => {
+                    toggleVisibility(`#${id}`);
+                    toggleVisibility(".bar nav"); // TODO and this one xD
+                })
+            }
+        })
+    }
+    clock?.addEventListener("click", () => toggleVisibility("#timer"));
+
+    function updateClock(): void {
+        if (clock) {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, "0");
+            const minutes = now.getMinutes().toString().padStart(2, "0");
+            clock.textContent = `${hours}:${minutes}`;
+        }
+    }
+    updateClock();
+    setInterval(updateClock, 15000);
+</script>
