@@ -1,0 +1,28 @@
+---
+export const metadata = {
+    id: 'color_picker',
+    name: 'Color Picker',
+    icon: 'palette',
+};
+---
+
+<div class="color_picker">
+</div>
+
+<style>
+    @use "../../styles/_animations.scss";
+    @use "../../styles/_colors.scss";
+    @use "../../styles/_fonts.scss";
+    @use "sass:color";
+    .color_picker {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+<script>
+</script>
