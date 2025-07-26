@@ -130,7 +130,7 @@ export const metadata = {
 
     let input = document.getElementById('calc-input') as HTMLInputElement;
     let result = document.getElementById('calc-result') as HTMLElement;
-    let container = document.getElementById('calculator') as HTMLElement;
+    let container = document.querySelector('.calculator') as HTMLElement;
     let expand = document.getElementById('calc-expand') as HTMLElement;
     let button_box = document.getElementById('calc-buttons') as HTMLElement;
 
@@ -218,4 +218,5 @@ export const metadata = {
 
     input.addEventListener("input", (event) => { calculate(input.value) } );
     expand.addEventListener("click", () => toggleButtons("#calc-buttons"));
+    container.addEventListener('click', () => { input.focus() });
 </script>
