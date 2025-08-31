@@ -2,6 +2,8 @@
 
 $accent: #EFCFEF;
 $wall: #F9E2FD;
+$wall_border: color.adjust($wall, $lightness: -5%);
+$wall_light: color.adjust($wall, $lightness: 5%);
 $fg: #3c424d;
 $bg: #FDF7FD;
 
