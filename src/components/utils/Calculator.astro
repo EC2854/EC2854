@@ -25,6 +25,8 @@ export const metadata = {
     @use "sass:color";
     .calculator {
         display: flex;
+        padding: 1em;
+        box-sizing: border-box;
         flex-direction: column;
         width: 100%;
         height: 100%;
@@ -104,6 +106,7 @@ export const metadata = {
                     }
                 }
                 & > button {
+                    color: colors.$util_fg;
                     font-family: 'Material Icons', sans-serif;
                     height: 24px;
                     width: 24px;
@@ -135,7 +138,6 @@ export const metadata = {
     let button_box = document.getElementById('calc-buttons') as HTMLElement;
 
     type ButtonConfig = {
-        id: string;
         label: string;
         value: string;
         icon?: boolean;

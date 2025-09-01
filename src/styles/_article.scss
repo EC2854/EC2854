@@ -1,0 +1,62 @@
+@use "./_colors.scss";
+.mdx {
+  h1,h2,h3 {
+    margin: .2em 0;
+    display: list-item;
+    list-style-type: square;
+    list-style-position: inside;
+  }
+  h1 {
+    color: colors.$article_h1;
+    font-size: 1.8em;
+  }
+  h2 {
+    color: colors.$article_h2;
+    font-size: 1.5em;
+  }
+
+  h3 {
+    color: colors.$article_h3;
+    font-size: 1.3em;
+  }
+  strong {
+    color: colors.$article_bold;
+  }
+
+  strong {
+    color: colors.$article_bold;
+  }
+  em {
+    color: colors.$article_italic;
+  }
+  a {
+    color: colors.$article_link;
+    text-decoration: underline;
+    font-weight: 700;
+  }
+  p {
+    margin: 0;
+  }
+  pre {
+    border: 2px solid colors.$util_border;
+  }
+  img {
+    border: 2px solid colors.$util_border;
+    width: 120px;
+    margin-right: .2em;
+  }
+  .container {
+    background-color: colors.$util_bg_high;
+    border: 2px solid colors.$util_border;
+    padding: 1em;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin: .5em 0;
+    & > p {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

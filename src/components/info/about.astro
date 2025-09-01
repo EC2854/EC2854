@@ -1,0 +1,128 @@
+---
+
+export const metadata = {
+    id: 'about',
+    name: 'About Me',
+    icon: 'waving_hand',
+};
+
+function loadComponents(glob) {
+    return Object.entries(glob).map(([path, mod]) => {
+        const metadata = mod.metadata ?? {};
+        return {
+            name: metadata.name ?? 'Unnamed',
+            id: metadata.id ?? 'id',
+            Component: mod.default,
+        };
+    });
+}
+const components = loadComponents(import.meta.glob('./about_componenets/*.mdx', { eager: true }));
+
+---
+
+<div class="about">
+    <nav> 
+        <ul>
+            {components.map(({ id, name }) => (
+                <li ><button toggle-id={id}>{name}</button></li>
+            ))}
+        </ul>
+    </nav>
+    <section>
+        {components.map(({ id, Component }) => (
+            <article class="mdx" id={id}>
+                <Component />
+            </article>
+        ))}
+    </section>
+</div>
+
+<style lang="scss">
+    @use "../../styles/_animations.scss";
+    @use "../../styles/_colors.scss";
+    @use "../../styles/_fonts.scss";
+    @use "sass:color";
+
+    .about {
+        align-items: start;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: top;
+        width: 100%;
+        & > section {
+            padding: .2em 1em;
+            width: 100%;
+            box-sizing: border-box;
+            & > article {
+                display: none;
+                color: colors.$util_fg;
+                &.visible {
+                    display: revert;
+                }
+                & > h1 {
+
+                }
+            }
+        }
+        & > nav {
+            background-color: colors.$util_bg_high;
+            border-bottom: 2px solid colors.$window_outline;
+            padding: .2em 0;
+            width: 100%;
+            & > ul {
+                display: flex;
+                height: 100%;
+                align-items: center;
+                justify-content: start;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                & > span {
+                    color: colors.$util_border;
+                }
+                & > li {
+                    font-weight: 700;
+                    padding: 0 .4em;
+                    & > button {
+                        border: 2px solid colors.$util_border;
+                        background-color: colors.$util_bg_highest;
+                        color: colors.$util_fg;
+                        user-select: none;
+                        cursor: pointer;
+                        transition: .2s;
+                        &:hover {
+                            animation: bounce 0.5s ease forwards;
+                            background-color: color.adjust(colors.$util_bg_highest, $lightness: 5%)
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<script>
+    const nav = document.querySelector(".about nav") as HTMLElement;
+    const buttons = nav.querySelectorAll<HTMLButtonElement>('button');
+
+
+    const defaultArticle = document.querySelector("#c_bio") as HTMLElement;
+    defaultArticle.classList.add("visible");
+
+    buttons.forEach(button => {
+        const id = button.getAttribute('toggle-id') as String;
+        if (id) {
+            button.addEventListener("click", () => {
+                const articles = document.querySelectorAll<HTMLElement>(".about section article");
+                const article = document.getElementById(`${id}`) as HTMLElement;
+
+                articles.forEach(article => {
+                    article.classList.remove("visible");
+                })
+                article.classList.add("visible");
+            })
+        }
+    })
+</script>

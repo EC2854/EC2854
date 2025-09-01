@@ -1,19 +1,30 @@
 ---
-const modules = import.meta.glob('../components/utils/*.astro', { eager: true });
-
-const utils = Object.entries(modules).map(([path, mod]) => {
-    const metadata = mod.metadata ?? {};
-    return {
-        id: metadata.id ?? 'unknown',
-        name: metadata.name ?? 'Unnamed',
-        icon: metadata.icon ?? 'apps',
-    };
-});
+function loadModules(glob) {
+    return Object.entries(glob).map(([path, mod]) => {
+        const metadata = mod.metadata ?? {};
+        return {
+            id: metadata.id ?? 'unknown',
+            name: metadata.name ?? 'Unnamed',
+            icon: metadata.icon ?? 'apps',
+        };
+    });
+}
+const utils = loadModules(import.meta.glob('../components/utils/*.astro', { eager: true }));
+const info = loadModules(import.meta.glob('../components/info/*.astro', { eager: true }));
 ---
 
 <div class="bar">
     <nav>
         <ul>
+            {info.map(({ id, name, icon }) => (
+                <li>
+                    <button toggle-id={id}>
+                        <span>{icon}</span>
+                        {name}
+                    </button>
+                </li>
+            ))}
+            <hr>
             {utils.map(({ id, name, icon }) => (
                 <li>
                     <button toggle-id={id}>
@@ -130,6 +141,9 @@ const utils = Object.entries(modules).map(([path, mod]) => {
         & > ul {
             padding: 0;
             list-style-type: none;
+            & > hr {
+                border: 1px solid colors.$nav_border;
+            }
             & > li {
                 & > button {
                     width: 100%;
