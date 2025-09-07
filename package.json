@@ -14,8 +14,8 @@
     "@fontsource/ibm-plex-mono": "^5.2.6",
     "@fontsource/material-icons": "^5.2.5",
     "astro": "5.13.5",
-    "mathjs": "^14.6.0",
-    "sass": "^1.91.0"
+    "mathjs": "^14.7.0",
+    "sass": "^1.92.1"
   },
   "devDependencies": {
     "@types/bun": "^1.2.21"
