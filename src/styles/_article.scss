@@ -1,5 +1,16 @@
 @use "./_colors.scss";
 .mdx {
+  .title {
+    // background-color: colors.$util_bg_high;
+    // border: 2px solid colors.$util_border;
+    padding: .5em;
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+    list-style-type: none;
+    font-size: 2em;
+    font-weight: 900;
+  }
   h1,h2,h3 {
     margin: .2em 0;
     display: list-item;
@@ -45,18 +56,27 @@
     width: 120px;
     margin-right: .2em;
   }
-  .container {
-    background-color: colors.$util_bg_high;
-    border: 2px solid colors.$util_border;
-    padding: 1em;
-    box-sizing: border-box;
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    margin: .5em 0;
-    & > p {
-      display: flex;
-      align-items: center;
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: .5em;
+    & > a {
+      text-decoration: none;
+      border: 3px solid colors.$util_border;
+      color: colors.$util_fg;
+      background-color: colors.$util_bg_high;
+      box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 10px;
+      padding: 2em;
+      display: block;
+      & img {
+        width: 100%;
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 5px;
+        border: 2px solid colors.$util_border;
+        border-radius: 6px;
+      }
+      & h2 {
+        list-style-type: none;
+      }
     }
   }
 }
