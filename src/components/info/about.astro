@@ -48,7 +48,6 @@ const components = loadComponents(import.meta.glob('./about_componenets/*', { ea
         display: flex;
         flex-direction: column;
         height: 100%;
-        justify-content: top;
         width: 100%;
         & > section {
             padding: .2em 1em;
@@ -68,6 +67,7 @@ const components = loadComponents(import.meta.glob('./about_componenets/*', { ea
             border-bottom: 2px solid colors.$window_outline;
             padding: .2em 0;
             width: 100%;
+            box-sizing: border-box;
             & > ul {
                 display: flex;
                 height: 100%;

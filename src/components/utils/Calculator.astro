@@ -64,10 +64,13 @@ export const metadata = {
             }
         }
         & > div {
-            width: 70%;
+            width: 80%;
             transition: .2s;
+            padding: 1em;
+            padding: 1em;
             &.full {
                 width: 100%;
+                padding: 1em 1em 0;
                 & > input {
                     height: 4em;
                 }
@@ -198,6 +201,13 @@ export const metadata = {
             expand.innerHTML = "keyboard_double_arrow_up";
             expand.classList.add("up");
             input_div.classList.add("full");
+
+            const window = document.getElementById("calculator") as HTMLDivElement;
+            if (window) {
+                if(Number(window.style.height.replace("px", "")) < 500) {
+                    window.style.height = "500px";
+                }
+            }
         } else {
             expand.innerHTML = "keyboard_double_arrow_down";
             expand.classList.remove("up");

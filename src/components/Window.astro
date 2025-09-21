@@ -48,6 +48,8 @@ const { name, id } = Astro.props;
         & > div {
             display: flex;
             flex-grow: 1;
+            height: 100%;
+            box-sizing: border-box;
 
             flex-direction: column;
             border: 5px solid colors.$window_border;
@@ -73,6 +75,7 @@ const { name, id } = Astro.props;
                 font-size: 1.5rem;
                 margin: 0;
                 pointer-events: none;
+                user-select: none;
             }
             & > nav {
                 margin-left: auto;
@@ -116,18 +119,22 @@ const { name, id } = Astro.props;
         }
     }
     section {
+        flex: 1;
         border: 2px solid colors.$window_outline;
         padding: 0;
-        overflow-y: scroll;
         background: colors.$window_bg;
         color: colors.$window_fg;
         height: 100%;
+        width: 100%;
+        display: flex;
+        box-sizing: border-box;
+        min-height: 0;
     }
 </style>
 
 <script is:inline define:vars={{ id }}>
     const el = document.getElementById(`${id}`);
-    const header = el.querySelector('header');
+    const header = el.querySelector('.window > div > header');
 
     let offsetX = 0;
     let offsetY = 0;
