@@ -28,7 +28,7 @@ const { name, id } = Astro.props;
         position: fixed;
         top: 100px;
         left: 100px;
-        width: 640px;
+        width: 800px;
         height: 480px;
         border: 2px solid colors.$window_outline;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -119,7 +119,7 @@ const { name, id } = Astro.props;
         border: 2px solid colors.$window_outline;
         padding: 0;
         overflow-y: scroll;
-        background-color: colors.$window_bg;
+        background: colors.$window_bg;
         color: colors.$window_fg;
         height: 100%;
     }
@@ -132,9 +132,6 @@ const { name, id } = Astro.props;
     let offsetX = 0;
     let offsetY = 0;
     let isDragging = false;
-
-    const MIN_WIDTH = 320;
-    const MIN_HEIGHT = 120;
 
     header.style.cursor = 'move';
 
@@ -169,12 +166,19 @@ const { name, id } = Astro.props;
             const newWidth = resizeStartWidth + dx;
             const newHeight = resizeStartHeight + dy;
 
-            if (newWidth >= MIN_WIDTH) {
-                el.style.width = `${newWidth}px`;
+            const originalWidth = el.style.width;
+            const originalHeight = el.style.height;
+
+            el.style.width = `${newWidth}px`;
+            const hasHorizontalOverflow = el.scrollWidth > el.clientWidth;
+            if (hasHorizontalOverflow) {
+                el.style.width = originalWidth;
             }
 
-            if (newHeight >= MIN_HEIGHT) {
-                el.style.height = `${newHeight}px`;
+            el.style.height = `${newHeight}px`;
+            const hasVerticalOverflow = el.scrollHeight > el.clientHeight;
+            if (hasVerticalOverflow) {
+                el.style.height = originalHeight;
             }
         }
     };
@@ -215,17 +219,17 @@ const { name, id } = Astro.props;
     });
 
     header.addEventListener('mousedown', onMouseDown);
-    document.getElementById(`${id}-close`).addEventListener("click", () => close_window(id));
+    document.getElementById(`${id}-close`).addEventListener("click", () => closeWindow(id));
 
-    function close_window(id) {
+    function closeWindow(id) {
         const el = document.getElementById(id);
         if (el) {
             el.classList.toggle("visible");
         }
     }
-    document.getElementById(`${id}-maximize`).addEventListener("click", () => maximize_window(id));
+    document.getElementById(`${id}-maximize`).addEventListener("click", () => maximizeWindow(id));
 
-    function maximize_window(id) {
+    function maximizeWindow(id) {
         const el = document.getElementById(id);
         if (el) {
             el.style.left = 0;

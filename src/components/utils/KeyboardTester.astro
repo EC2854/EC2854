@@ -1,0 +1,341 @@
+---
+export const metadata = {
+    id: 'keyboard',
+    name: 'Keyboard Tester',
+    icon: 'keyboard',
+};
+---
+
+<div class="keyboard">
+    <div id="key-buttons">
+        <div id="key-main"></div>
+        <div id="key-nav"></div>
+        <div id="key-num"></div>
+    </div>
+</div>
+
+<style lang="scss" is:global>
+    @use "../../styles/_colors.scss";
+    @use "../../styles/_fonts.scss";
+    @use "sass:color";
+    .keyboard {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 1em;
+        box-sizing: border-box;
+        & > div {
+            display: flex;
+            & > * {
+                margin: 0 .2em; 
+            }
+            & > #key-main {
+                & > .alphanumeric {
+                    display: grid;
+                    grid-template-columns: repeat(14, 1fr);
+                    gap: .2em;
+                }
+                & > .function_keys {
+                    display: flex;
+                    width: 100%;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom:.4em;
+                    & > * {
+                        width: 100%;
+                    }
+                }
+            }
+            & > #key-nav {
+                display: flex;
+                flex-direction:column;
+                & > .system {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: .2em;
+                }
+                & > .arrows_top {
+                    margin-top: auto;
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: .2em;
+                }
+                & > .arrows_bottom {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: .2em;
+                }
+            }
+            & > #key-num {
+                display: flex;
+                & > .numpad {
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: .2em;
+                }
+            }
+
+        }
+
+    }
+    .key {
+        margin: .1em;
+        padding: .2em .8em;
+        border: 1px solid colors.$util_border;
+        background-color: colors.$util_button_bg;
+        color: colors.$util_fg;
+        box-sizing: border-box;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 2px;
+        font-weight: bold;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        &.pressed {
+            background-color: colors.$util_button_bg_pressed;
+            color: colors.$util_button_fg_pressed;
+            border-color: colors.$util_button_border_pressed;
+        }
+    }
+    #key_empty {
+        background-color: none;
+        border: none;
+        box-shadow: none;
+    }
+    .hidden {
+        display: none !important;
+    }
+</style>
+
+<script>
+    const container = document.querySelector(".keyboard") as HTMLDivElement;
+    const main=document.getElementById("key-main") as HTMLDivElement;
+    const nav=document.getElementById("key-nav") as HTMLDivElement;
+    const num=document.getElementById("key-num") as HTMLDivElement;
+
+    type Key = {
+        label: string;
+        code: string;
+        width?: number;
+        height?: number;
+        icon?: boolean;
+    };
+
+    type KeySection = {
+        name: string;
+        keys: Key[];
+    };
+
+    const keyboardLayout: KeySection[] = [
+        {
+            name: "Alphanumeric",
+            keys: [
+                { label: "`", code: "Backquote" },
+                { label: "1", code: "Digit1" },
+                { label: "2", code: "Digit2" },
+                { label: "3", code: "Digit3" },
+                { label: "4", code: "Digit4" },
+                { label: "5", code: "Digit5" },
+                { label: "6", code: "Digit6" },
+                { label: "7", code: "Digit7" },
+                { label: "8", code: "Digit8" },
+                { label: "9", code: "Digit9" },
+                { label: "0", code: "Digit0" },
+                { label: "-", code: "Minus" },
+                { label: "=", code: "Equal" },
+                { label: "backspace", code: "Backspace", icon: true },
+
+                { label: "keyboard_tab", code: "Tab", icon:true },
+                { label: "Q", code: "KeyQ" },
+                { label: "W", code: "KeyW" },
+                { label: "E", code: "KeyE" },
+                { label: "R", code: "KeyR" },
+                { label: "T", code: "KeyT" },
+                { label: "Y", code: "KeyY" },
+                { label: "U", code: "KeyU" },
+                { label: "I", code: "KeyI" },
+                { label: "O", code: "KeyO" },
+                { label: "P", code: "KeyP" },
+                { label: "[", code: "BracketLeft" },
+                { label: "]", code: "BracketRight" },
+                { label: "\\", code: "Backslash"},
+
+                { label: "keyboard_capslock", code: "CapsLock",icon: true },
+                { label: "A", code: "KeyA" },
+                { label: "S", code: "KeyS" },
+                { label: "D", code: "KeyD" },
+                { label: "F", code: "KeyF" },
+                { label: "G", code: "KeyG" },
+                { label: "H", code: "KeyH" },
+                { label: "J", code: "KeyJ" },
+                { label: "K", code: "KeyK" },
+                { label: "L", code: "KeyL" },
+                { label: ";", code: "Semicolon" },
+                { label: "'", code: "Quote" },
+                { label: "keyboard_return", code: "Enter", width: 2, icon:true },
+
+                { label: "Shift", code: "ShiftLeft", width: 2 },
+                { label: "Z", code: "KeyZ" },
+                { label: "X", code: "KeyX" },
+                { label: "C", code: "KeyC" },
+                { label: "V", code: "KeyV" },
+                { label: "B", code: "KeyB" },
+                { label: "N", code: "KeyN" },
+                { label: "M", code: "KeyM" },
+                { label: ",", code: "Comma" },
+                { label: ".", code: "Period" },
+                { label: "/", code: "Slash" },
+                { label: "Shift", code: "ShiftRight", width: 2 },
+
+                { label: "Ctrl", code: "ControlLeft" },
+                { label: "keyboard_command_key", code: "MetaLeft", icon: true },
+                { label: "Alt ", code: "AltLeft" },
+                { label: "space_bar", code: "Space" , width: 8, icon: true },
+                { label: "Alt", code: "AltRight" },
+                { label: "keyboard_command_key", code: "MetaRight", icon: true },
+                { label: "Ctrl", code: "ControlRight" }
+            ]
+        },
+        {
+            name: "Arrows Top",
+            keys: [
+                { label: "", code: "empty" },
+                { label: "keyboard_arrow_up", code: "ArrowUp", icon: true }
+            ]
+        },
+        {
+            name: "Arrows Bottom",
+            keys: [
+                { label: "keyboard_arrow_left", code: "ArrowLeft", icon: true },
+                { label: "keyboard_arrow_down", code: "ArrowDown", icon: true },
+                { label: "keyboard_arrow_right", code: "ArrowRight", icon: true }
+            ]
+        },
+
+        {
+            name: "Function Keys",
+            keys: [
+                { label: "Esc", code: "Escape" },
+                { label: "F1", code: "F1" },
+                { label: "F2", code: "F2" },
+                { label: "F3", code: "F3" },
+                { label: "F4", code: "F4" },
+                { label: "F5", code: "F5" },
+                { label: "F6", code: "F6" },
+                { label: "F7", code: "F7" },
+                { label: "F8", code: "F8" },
+                { label: "F9", code: "F9" },
+                { label: "F10", code: "F10" },
+                { label: "F11", code: "F11" },
+                { label: "F12", code: "F12" },
+            ]
+        },
+        {
+            name: "Numpad",
+            keys: [
+                { label: "Num \nLock", code: "NumLock" },
+                { label: "/", code: "NumpadDivide" },
+                { label: "*", code: "NumpadMultiply" },
+                { label: "-", code: "NumpadSubtract" },
+                { label: "7", code: "Numpad7" },
+                { label: "8", code: "Numpad8" },
+                { label: "9", code: "Numpad9" },
+                { label: "+", code: "NumpadAdd", height: 2 },
+                { label: "4", code: "Numpad4" },
+                { label: "5", code: "Numpad5" },
+                { label: "6", code: "Numpad6" },
+
+                { label: "1", code: "Numpad1" },
+                { label: "2", code: "Numpad2" },
+                { label: "3", code: "Numpad3" },
+                { label: "keyboard_return", code: "NumpadEnter", icon: true, height: 2 },
+
+                { label: "0", code: "Numpad0", width: 2 },
+                { label: ".", code: "NumpadDecimal" }
+            ]
+        },
+        {
+            name: "System",
+            keys: [
+                { label: "PrtSc", code: "PrintScreen" },
+                { label: "ScrLk", code: "ScrollLock" },
+                { label: "Pause", code: "Pause" },
+                { label: "Insert", code: "Insert" },
+                { label: "Home", code: "Home" },
+                { label: "PgUp", code: "PageUp" },
+                { label: "Delete", code: "Delete" },
+                { label: "End", code: "End" },
+                { label: "PgDn", code: "PageDown" }
+            ]
+        }
+    ];
+
+
+    function createKeyElement(key: Key): HTMLDivElement {
+        const keybox = document.createElement("div");
+        keybox.classList.add("key");
+        keybox.id = `key_${key.code}`;
+        keybox.innerText = key.label;
+
+        if (key.width) {
+            keybox.style.gridColumn = `span ${key.width}`;
+        }
+        if (key.height) {
+            keybox.style.gridRow = `span ${key.height}`;
+        }
+        if (key.icon) {
+            keybox.style.fontFamily = 'Material Icons';
+        }
+
+        return keybox;
+    }
+    function renderSection(sectionName: string, div: HTMLDivElement): void {
+        const section = keyboardLayout.find(section => section.name === sectionName) as KeySection;
+        if (section) {
+            const sectionDiv = document.createElement("div") as HTMLDivElement;
+            sectionDiv.classList.add(sectionName.toLowerCase().replace(/\s+/g, "_"));
+
+            section.keys.forEach(key => {
+                const keyElement = createKeyElement(key);
+                sectionDiv.appendChild(keyElement);
+            });
+            div.appendChild(sectionDiv);
+        }
+    }
+
+
+    renderSection("Function Keys", main);
+    renderSection("Alphanumeric", main);
+    renderSection("System", nav);
+    renderSection("Arrows Top", nav)
+    renderSection("Arrows Bottom", nav)
+    renderSection("Numpad", num)
+
+    document.addEventListener("keydown", (key) => {
+        document.getElementById(`key_${key.code}`)?.classList.add("pressed");
+    })
+    document.addEventListener("keyup", (key) => {
+        document.getElementById(`key_${key.code}`)?.classList.remove("pressed");
+    })
+    const observer = new ResizeObserver(entries => {
+        for (let entry of entries) {
+            const width = entry.contentRect.width;
+            console.log(width)
+
+            if (width < 1100) {
+                nav.classList.add('hidden');
+            } else if (width < 1300) {
+                num.classList.add('hidden');
+                nav.classList.remove('hidden');
+            } else {
+                num.classList.remove('hidden');
+            }
+        }
+    });
+
+    observer.observe(container);
+</script>

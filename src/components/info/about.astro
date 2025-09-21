@@ -54,14 +54,12 @@ const components = loadComponents(import.meta.glob('./about_componenets/*', { ea
             padding: .2em 1em;
             width: 100%;
             box-sizing: border-box;
+            overflow-y: auto;
             & > article {
                 display: none;
                 color: colors.$util_fg;
                 &.visible {
                     display: revert;
-                }
-                & > h1 {
-
                 }
             }
         }

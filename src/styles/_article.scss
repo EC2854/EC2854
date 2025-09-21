@@ -10,6 +10,13 @@
     list-style-type: none;
     font-size: 2em;
     font-weight: 900;
+    &::before {
+      content: "⚞ ";
+
+    }
+    &::after {
+      content: " ⚟";
+    }
   }
   h1,h2,h3 {
     margin: .2em 0;
@@ -32,10 +39,7 @@
   }
   strong {
     color: colors.$article_bold;
-  }
-
-  strong {
-    color: colors.$article_bold;
+    font-weight: 900;
   }
   em {
     color: colors.$article_italic;
@@ -61,21 +65,30 @@
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: .5em;
     & > a {
+      &:hover {
+        scale: 1.025;
+        transition: .2s;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 10px 20px;
+      }
       text-decoration: none;
       border: 3px solid colors.$util_border;
       color: colors.$util_fg;
-      background-color: colors.$util_bg_high;
+      background: colors.$util_bg_high;
       box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 10px;
       padding: 2em;
       display: block;
       & img {
         width: 100%;
         box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 5px;
-        border: 2px solid colors.$util_border;
-        border-radius: 6px;
+        border: 3px solid colors.$util_border;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        margin-bottom: .5em;
       }
       & h2 {
+        text-align: center;
         list-style-type: none;
+        font-weight: 900;
       }
     }
   }

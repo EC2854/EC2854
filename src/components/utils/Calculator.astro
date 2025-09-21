@@ -48,7 +48,7 @@ export const metadata = {
             & > button {
                 font-weight: bold;
                 border: 2px solid colors.$util_border;
-                background-color: colors.$util_bg_highest;
+                background: colors.$util_button_bg;
                 color: colors.$util_fg;
                 cursor: pointer;
                 width: 100%;
@@ -57,7 +57,9 @@ export const metadata = {
                 user-select: none;
                 transition: .3s;
                 &:hover {
-                    background-color: color.adjust(colors.$util_bg_highest, $lightness: 5%)
+                    background-color: colors.$util_button_bg_pressed;
+                    color: colors.$util_button_fg_pressed;
+                    border-color: colors.$util_button_border_pressed;
                 }
             }
         }
@@ -111,13 +113,14 @@ export const metadata = {
                     height: 24px;
                     width: 24px;
                     border: 2px solid colors.$util_border;
-                    background-color: colors.$util_bg_highest;
+                    background-color: colors.$util_button_bg;
                     user-select: none;
                     cursor: pointer;
                     transition: .2s;
                     &:hover {
                         animation: down 0.5s ease forwards;
-                        background-color: color.adjust(colors.$util_bg_highest, $lightness: 5%)
+                        background-color: color.adjust(colors.$util_button_bg_pressed, $lightness: 5%);
+                        color: color.adjust(colors.$util_button_fg_pressed, $lightness: 5%);
                     }
                     &.up:hover {
                         animation: up 0.5s ease forwards;
@@ -201,8 +204,8 @@ export const metadata = {
             input_div.classList.remove("full");
         }
     }
-    function calculate(input: string) {
-        input = input.toString().trim();
+    function calculate(input: string): void {
+        input = input.trim();
         if (input == "") {
             result.innerHTML = "";
             return;
@@ -218,7 +221,7 @@ export const metadata = {
         }
     }
 
-    input.addEventListener("input", (event) => { calculate(input.value) } );
+    input.addEventListener("input", () => { calculate(input.value) } );
     expand.addEventListener("click", () => toggleButtons("#calc-buttons"));
     container.addEventListener('click', () => { input.focus() });
 </script>
