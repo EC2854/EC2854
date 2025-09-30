@@ -46,131 +46,120 @@ const info = loadModules(import.meta.glob('../components/info/*.astro', { eager:
 
 <style lang="scss">
     @use "../styles/_animations.scss";
-    @use "../styles/_colors.scss";
     @use "../styles/_fonts.scss";
-    @use "sass:color";
 
     .bar {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 9999;
-        pointer-events: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      pointer-events: none;
     }
+
     header {
-        pointer-events: all;
-        background: colors.$bar_bg;
-        color: colors.$bar_fg;
-        border-top: 3px solid color.adjust(colors.$bar_accent, $lightness: -10%);
-        padding: 8px;
+      pointer-events: all;
+      background: var(--bar-bg);
+      color: var(--fg);
+      border-top: 3px solid var(--bar-border);
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      height: 48px;
+      box-sizing: border-box;
+      z-index: 10;
+      font-weight: 600;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+      & > * {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
-        height: 48px;
+      }
+
+      & > #logo,
+      & > #clock {
+        height: 32px;
+        padding: 0 .8rem;
+        font-size: 1.05rem;
         box-sizing: border-box;
-        z-index: 10;
-        font-weight: 600;
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        & > * {
-            display: flex;
-            align-items: center;
-        }
-        & > #logo {
-            height: 32px;
-            padding: 0 .8rem;
-            font-size: 1.05rem;
-            box-sizing: border-box;
+        cursor: pointer;
+        background-color: var(--bar-button);
+        color: var(--bar-button-fg);
+        border: 2px solid var(--bar-button-fg);
+        box-shadow: rgba(0, 0, 0, 0.1) 1.95px 1.95px 2.6px;
 
-            cursor: pointer;
-            background-color: colors.$logo;
-            color: color.adjust(colors.$logo, $lightness: -20%);
-            border: 2px solid color.adjust(colors.$logo, $lightness: -10%);
-            box-shadow: rgba(0, 0, 0, .1) 1.95px 1.95px 2.6px;
-            &:hover {
-                animation: bounce 0.5s ease forwards;
-                background-color: color.adjust(colors.$logo, $lightness: 10%);
-                color: color.adjust(colors.$logo, $lightness: -10%);
-                border: 2px solid color.adjust(colors.$logo, $lightness: -5%);
-            }
-            & > span {
-                font-family: 'Material Icons', sans-serif;
-                font-size: 1.1rem;
-            }
+        &:hover {
+          animation: bounce 0.5s ease forwards;
+          background-color: var(--bar-button-pressed);
+          color: var(--bar-button-fg-pressed);
+          border-color: var(--bar-button-fg-pressed);
         }
-        & > #clock {
-            cursor: pointer;
-            margin-left: auto;
-            height: 32px;
-            padding: 0 .8rem;
-            font-size: 1.05rem;
-            box-sizing: border-box;
-            box-shadow: rgba(0, 0, 0, .1) 1.95px 1.95px 2.6px;
 
-            background-color: colors.$logo;
-            color: color.adjust(colors.$logo, $lightness: -20%);
-            border: 2px solid color.adjust(colors.$logo, $lightness: -10%);
-            &:hover {
-                animation: bounce 0.5s ease forwards;
-                background-color: color.adjust(colors.$logo, $lightness: 10%);
-                color: color.adjust(colors.$logo, $lightness: -10%);
-                border: 2px solid color.adjust(colors.$logo, $lightness: -5%);
-            }
+        & > span {
+          font-family: 'Material Icons', sans-serif;
+          font-size: 1.1rem;
         }
+      }
+
+      & > #clock {
+        margin-left: auto;
+      }
     }
+
     nav {
-        width: 360px;
-        height: 50vh;
-        background: colors.$nav_bg;
-        color: colors.$nav_fg;
-        visibility: hidden;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: .2s;
-        padding: .2em 1em;
-        border: 3px solid color.adjust(colors.$bar_accent, $lightness: -10%);
-        box-shadow: 0px -3px 5px rgba(0, 0, 0, 0.1);
-        border-bottom: none;
-        &.visible {
-            pointer-events: all;
-            visibility: visible;
-            opacity: 1;
-            transform: translateY(0);
-            transition-delay: 0s;
+      width: 360px;
+      height: 50vh;
+      background: var(--bar-bg);
+      color: var(--fg);
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 0.2s;
+      padding: 0.2em 1em;
+      border: 3px solid var(--bar-border);
+      border-bottom: none;
+      box-shadow: 0px -3px 5px rgba(0, 0, 0, 0.1);
+
+      &.visible {
+        pointer-events: all;
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0s;
+      }
+
+      & > ul {
+        padding: 0;
+        list-style-type: none;
+
+        & > hr {
+          border: 1px solid var(--bar-border);
         }
-        & > ul {
-            padding: 0;
-            list-style-type: none;
-            & > hr {
-                border: 1px solid colors.$nav_border;
-            }
-            & > li {
-                & > button {
-                    width: 100%;
-                    color: colors.$nav_fg;
-                    background: none;
-                    border: none;
-                    margin: .2em 0;
-                    transition: .16s;
-                    font-size: 1.3em;
-                    text-align: left;
-                    padding: .2em .8em;
-                    cursor: pointer;
-                    & > span {
-                        font-family: 'Material Icons', sans-serif;
-                        color: color.adjust(colors.$nav_accent, $lightness: -10%);
-                    }
-                    &:hover{
-                        border-left: .8em solid color.adjust(colors.$nav_accent, $lightness: -10%);
-                        color: color.adjust(colors.$nav_accent, $lightness: -20%);
-                        background: linear-gradient(to right, colors.$nav_accent , colors.$nav_bg);
-                        & > span {
-                            color: color.adjust(colors.$nav_accent, $lightness: -10%);
-                        }
-                    }
-                }
-            }
+
+        & > li > button {
+          width: 100%;
+          color: var(--fg);
+          background: none;
+          border: none;
+          margin: 0.2em 0;
+          transition: 0.16s;
+          font-size: 1.3em;
+          text-align: left;
+          padding: 0.2em 0.8em;
+          cursor: pointer;
+
+          & > span {
+            font-family: 'Material Icons', sans-serif;
+            color: var(--bar-fg);
+          }
+
+          &:hover {
+            border-left: 0.8em solid var(--bar-pressed);
+            background: linear-gradient(to right, var(--bar-pressed-light), var(--bar-bg));
+          }
         }
+      }
     }
 </style>
 

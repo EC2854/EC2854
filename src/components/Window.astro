@@ -30,7 +30,7 @@ const { name, id } = Astro.props;
         left: 100px;
         width: 800px;
         height: 480px;
-        border: 2px solid colors.$window_outline;
+        border: 2px solid var(--window-outline);
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         box-sizing: border-box;
         visibility: hidden;
@@ -52,18 +52,19 @@ const { name, id } = Astro.props;
             box-sizing: border-box;
 
             flex-direction: column;
-            border: 5px solid colors.$window_border;
+            border: 5px solid var(--window-border);
         }
     }
     header {
-        border-bottom: 5px solid colors.$window_border;
+        border-bottom: 5px solid var(--window-border);
+        cursor: move;
         & > div {
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            background: colors.$window_bar_bg;
-            border: 2px solid colors.$window_outline;
-            color: colors.$window_bar_fg;
+            background: linear-gradient(to right, var(--window-header) 70%, var(--window-header-light));
+            border: 2px solid var(--window-outline);
+            color: var(--fg);
             padding: .2rem .5rem;
             font-weight: 600;
             user-select: none;
@@ -95,23 +96,23 @@ const { name, id } = Astro.props;
                 }
                 & > .button- {
                     &maximize {
-                        background-color: colors.$maximize;
-                        border: 2px solid color.adjust(colors.$maximize, $lightness: -30%);
-                        color: color.adjust(colors.$maximize, $lightness: -30%);
+                        background-color: var(--maximize);
+                        border: 2px solid var(--maximize-fg);
+                        color: var(--maximize-fg);
                         &:hover {
-                            background-color: color.adjust(colors.$maximize, $lightness: 10%);
-                            border: 2px solid color.adjust(colors.$maximize, $lightness: -10%);
-                            color: color.adjust(colors.$maximize, $lightness: -10%);
+                            background-color: var(--maximize-pressed);
+                            border: 2px solid var(--maximize-fg-pressed);
+                            color: var(--maximize-fg-pressed);
                         }
                     }
                     &close {
-                        background-color: colors.$close;
-                        border: 2px solid color.adjust(colors.$close, $lightness: -30%);
-                        color: color.adjust(colors.$close, $lightness: -30%);
+                        background-color: var(--close);
+                        border: 2px solid var(--close-fg);
+                        color: var(--close-fg);
                         &:hover {
-                            background-color: color.adjust(colors.$close, $lightness: 10%);
-                            border: 2px solid color.adjust(colors.$close, $lightness: -10%);
-                            color: color.adjust(colors.$close, $lightness: -10%);
+                            background-color: var(--close-pressed);
+                            border: 2px solid var(--close-fg-pressed);
+                            color: var(--close-fg-pressed);
                         }
                     }
                 }
@@ -120,10 +121,10 @@ const { name, id } = Astro.props;
     }
     section {
         flex: 1;
-        border: 2px solid colors.$window_outline;
+        border: 2px solid var(--window-outline);
         padding: 0;
-        background: colors.$window_bg;
-        color: colors.$window_fg;
+        background: var(--bg);
+        color: var(--fg);
         height: 100%;
         width: 100%;
         display: flex;
@@ -133,25 +134,22 @@ const { name, id } = Astro.props;
 </style>
 
 <script is:inline define:vars={{ id }}>
-    const el = document.getElementById(`${id}`);
+    const el = document.getElementById(id);
     const header = el.querySelector('.window > div > header');
-
-    let offsetX = 0;
-    let offsetY = 0;
-    let isDragging = false;
-
-    header.style.cursor = 'move';
+    const closeBtn = document.getElementById(`${id}-close`);
+    const maximizeBtn = document.getElementById(`${id}-maximize`);
 
     function setZIndex(className, zIndex) {
-        const divs = document.querySelectorAll(`div.${className}`);
-        for (let i = 0; i < divs.length; i++) {
-            divs[i].style.zIndex = zIndex.toString();
-        }
+        document.querySelectorAll(`div.${className}`).forEach(div => {
+            div.style.zIndex = zIndex.toString();
+        });
     }
 
-    const onMouseDown = (e) => {
-        isDragging = true;
+    let isDragging = false;
+    let offsetX = 0, offsetY = 0;
 
+    function onMouseDown(e) {
+        isDragging = true;
         const rect = el.getBoundingClientRect();
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
@@ -161,56 +159,23 @@ const { name, id } = Astro.props;
 
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
-    };
+    }
 
-    const onMouseMove = (e) => {
-        if (isDragging) {
-            el.style.left = `${e.clientX - offsetX}px`;
-            el.style.top = `${e.clientY - offsetY}px`;
-        } else if (isResizing) {
-            const dx = e.clientX - resizeStartX;
-            const dy = e.clientY - resizeStartY;
-            const newWidth = resizeStartWidth + dx;
-            const newHeight = resizeStartHeight + dy;
-
-            const originalWidth = el.style.width;
-            const originalHeight = el.style.height;
-
-            el.style.width = `${newWidth}px`;
-            const hasHorizontalOverflow = el.scrollWidth > el.clientWidth;
-            if (hasHorizontalOverflow) {
-                el.style.width = originalWidth;
-            }
-
-            el.style.height = `${newHeight}px`;
-            const hasVerticalOverflow = el.scrollHeight > el.clientHeight;
-            if (hasVerticalOverflow) {
-                el.style.height = originalHeight;
-            }
-        }
-    };
-
-    const onMouseUp = () => {
-        isDragging = false;
-        isResizing = false;
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-    };
-
+    // Resizing
     let isResizing = false;
-    let resizeStartX = 0;
-    let resizeStartY = 0;
-    let resizeStartWidth = 0;
-    let resizeStartHeight = 0;
+    let resizeStartX = 0, resizeStartY = 0;
+    let resizeStartWidth = 0, resizeStartHeight = 0;
 
     const resizer = document.createElement("div");
-    resizer.style.width = "20px";
-    resizer.style.height = "20px";
-    resizer.style.position = "absolute";
-    resizer.style.right = "0";
-    resizer.style.bottom = "0";
-    resizer.style.cursor = "se-resize";
-    resizer.style.background = "transparent";
+    Object.assign(resizer.style, {
+        width: "20px",
+        height: "20px",
+        position: "absolute",
+        right: "0",
+        bottom: "0",
+        cursor: "se-resize",
+        background: "transparent"
+    });
     el.appendChild(resizer);
 
     resizer.addEventListener("mousedown", (e) => {
@@ -225,24 +190,74 @@ const { name, id } = Astro.props;
         document.addEventListener("mouseup", onMouseUp);
     });
 
-    header.addEventListener('mousedown', onMouseDown);
-    document.getElementById(`${id}-close`).addEventListener("click", () => closeWindow(id));
+    // Shared mouse move handler
+    function onMouseMove(e) {
+        if (isDragging) {
+            el.style.left = `${e.clientX - offsetX}px`;
+            el.style.top = `${e.clientY - offsetY}px`;
+        } else if (isResizing) {
+            const dx = e.clientX - resizeStartX;
+            const dy = e.clientY - resizeStartY;
 
-    function closeWindow(id) {
-        const el = document.getElementById(id);
-        if (el) {
-            el.classList.toggle("visible");
+            const newWidth = resizeStartWidth + dx;
+            const newHeight = resizeStartHeight + dy;
+
+            const originalWidth = el.style.width;
+            const originalHeight = el.style.height;
+
+            el.style.width = `${newWidth}px`;
+            if (el.scrollWidth > el.clientWidth) el.style.width = originalWidth;
+
+            el.style.height = `${newHeight}px`;
+            if (el.scrollHeight > el.clientHeight) el.style.height = originalHeight;
+
         }
+        const data = el.dataset;
+        data.prevLeft = el.style.left || el.offsetLeft + "px";
+        data.prevTop = el.style.top || el.offsetTop + "px";
+        data.prevWidth = el.style.width || el.offsetWidth + "px";
+        data.prevHeight = el.style.height || el.offsetHeight + "px";
+        data.maximized = "false";
     }
-    document.getElementById(`${id}-maximize`).addEventListener("click", () => maximizeWindow(id));
 
-    function maximizeWindow(id) {
-        const el = document.getElementById(id);
-        if (el) {
-            el.style.left = 0;
-            el.style.top = 0;
+    function onMouseUp() {
+        isDragging = false;
+        isResizing = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    // Close window
+    function closeWindow() {
+        el.classList.toggle("visible");
+    }
+
+    // Maximize / Restore window
+    function maximizeWindow() {
+        const data = el.dataset;
+
+        if (data.maximized === "true") {
+            el.style.left = data.prevLeft || "100px";
+            el.style.top = data.prevTop || "100px";
+            el.style.width = data.prevWidth || "800px";
+            el.style.height = data.prevHeight || "480px";
+            data.maximized = "false";
+        } else {
+            data.prevLeft = el.style.left || el.offsetLeft + "px";
+            data.prevTop = el.style.top || el.offsetTop + "px";
+            data.prevWidth = el.style.width || el.offsetWidth + "px";
+            data.prevHeight = el.style.height || el.offsetHeight + "px";
+
+            el.style.left = "0";
+            el.style.top = "0";
             el.style.width = "100vw";
-            el.style.height = `calc(100vh - 48px)`; // TODO replace this hardcoded 48px
+            el.style.height = "calc(100vh - 48px)";
+            data.maximized = "true";
         }
     }
+
+    header.addEventListener("mousedown", onMouseDown);
+    header.addEventListener("dblclick", maximizeWindow);
+    closeBtn.addEventListener("click", closeWindow);
+    maximizeBtn.addEventListener("click", maximizeWindow);
 </script>

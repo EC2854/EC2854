@@ -3,7 +3,7 @@
 [ ] add consistant images to projects
 
 # utils
-[ ] keyboard tester
+[x] keyboard tester
 [ ] color picker
 [ ] quick picker
 [ ] make bio and links

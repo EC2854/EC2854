@@ -47,9 +47,9 @@ export const metadata = {
             }
             & > button {
                 font-weight: bold;
-                border: 2px solid colors.$util_border;
-                background: colors.$util_button_bg;
-                color: colors.$util_fg;
+                border: 2px solid var(--border);
+                background: var(--bg-highest);
+                color: var(--fg);
                 cursor: pointer;
                 width: 100%;
                 height: 100%;
@@ -57,9 +57,9 @@ export const metadata = {
                 user-select: none;
                 transition: .3s;
                 &:hover {
-                    background-color: colors.$util_button_bg_pressed;
-                    color: colors.$util_button_fg_pressed;
-                    border-color: colors.$util_button_border_pressed;
+                    background-color: var(--bg-pressed);
+                    color: var(--fg-pressed);
+                    border-color: var(--border-pressed);
                 }
             }
         }
@@ -86,44 +86,44 @@ export const metadata = {
                 font-size: 1.2em;
                 padding: .2em 1em;
                 box-sizing: border-box;
-                border: 2px solid colors.$util_border;
-                background-color: colors.$util_bg_high;
-                color: colors.$util_fg;
+                border: 2px solid var(--border);
+                background-color: var(--bg-high);
+                color: var(--fg);
             }
             & > div {
-                border: 2px solid colors.$util_border;
+                border: 2px solid var(--border);
                 border-top: none;
                 box-sizing: border-box;
                 padding: .2em 1em;
                 width: 100%;
                 height: 2.5em;
                 font-size: 1.2em;
-                background-color: colors.$util_bg_high;
+                background-color: var(--bg-high);
                 margin: 0;
                 display: flex;
                 align-items: center;
                 & > p {
                     width: 100%;
-                    color: colors.$util_fg;
+                    color: var(--fg);
                     font-weight: bold;
                     &.error {
-                        color: color.adjust(colors.$close, $lightness: -10%);
+                        color: var(--close-fg)
                     }
                 }
                 & > button {
-                    color: colors.$util_fg;
+                    color: var(--fg);
                     font-family: 'Material Icons', sans-serif;
                     height: 24px;
                     width: 24px;
-                    border: 2px solid colors.$util_border;
-                    background-color: colors.$util_button_bg;
+                    border: 2px solid var(--border);
+                    background-color: var(--button-bg);
                     user-select: none;
                     cursor: pointer;
                     transition: .2s;
                     &:hover {
                         animation: down 0.5s ease forwards;
-                        background-color: color.adjust(colors.$util_button_bg_pressed, $lightness: 5%);
-                        color: color.adjust(colors.$util_button_fg_pressed, $lightness: 5%);
+                        background-color: var(--bg-pressed);
+                        color: var(--fg-pressed);
                     }
                     &.up:hover {
                         animation: up 0.5s ease forwards;

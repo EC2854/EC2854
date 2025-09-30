@@ -1,8 +1,6 @@
 @use "./_colors.scss";
 .mdx {
   .title {
-    // background-color: colors.$util_bg_high;
-    // border: 2px solid colors.$util_border;
     padding: .5em;
     box-sizing: border-box;
     width: 100%;
@@ -25,27 +23,27 @@
     list-style-position: inside;
   }
   h1 {
-    color: colors.$article_h1;
+    color: var(--h1);
     font-size: 1.8em;
   }
   h2 {
-    color: colors.$article_h2;
+    color: var(--h2);
     font-size: 1.5em;
   }
 
   h3 {
-    color: colors.$article_h3;
+    color: var(--h3);
     font-size: 1.3em;
   }
   strong {
-    color: colors.$article_bold;
+    color: var(--bold);
     font-weight: 900;
   }
   em {
-    color: colors.$article_italic;
+    color: var(--italic);
   }
   a {
-    color: colors.$article_link;
+    color: var(--link);
     text-decoration: underline;
     font-weight: 700;
   }
@@ -53,10 +51,10 @@
     margin: 0;
   }
   pre {
-    border: 2px solid colors.$util_border;
+    border: 2px solid var(--border);
   }
   img {
-    border: 2px solid colors.$util_border;
+    border: 2px solid var(--border);
     width: 120px;
     margin-right: .2em;
   }
@@ -71,16 +69,16 @@
         box-shadow: rgba(0, 0, 0, 0.25) 0px 10px 20px;
       }
       text-decoration: none;
-      border: 3px solid colors.$util_border;
-      color: colors.$util_fg;
-      background: colors.$util_bg_high;
+      border: 3px solid var(--border);
+      color: var(--fg);
+      background: var(--bg-high);
       box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 10px;
       padding: 2em;
       display: block;
       & img {
         width: 100%;
         box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 5px;
-        border: 3px solid colors.$util_border;
+        border: 3px solid var(--border);
         aspect-ratio: 1 / 1;
         object-fit: cover;
         margin-bottom: .5em;

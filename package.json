@@ -10,14 +10,14 @@
     "update": "bun x @astrojs/upgrade && bun update"
   },
   "dependencies": {
-    "@astrojs/mdx": "4.3.5",
+    "@astrojs/mdx": "4.3.6",
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/material-icons": "^5.2.7",
-    "astro": "5.13.9",
-    "mathjs": "^14.7.0",
-    "sass": "^1.93.0"
+    "astro": "5.14.1",
+    "mathjs": "^14.8.1",
+    "sass": "^1.93.2"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.22"
+    "@types/bun": "^1.2.23"
   }
 }

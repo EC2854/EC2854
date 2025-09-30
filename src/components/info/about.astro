@@ -56,15 +56,15 @@ const components = loadComponents(import.meta.glob('./about_componenets/*', { ea
             overflow-y: auto;
             & > article {
                 display: none;
-                color: colors.$util_fg;
+                color: var(--fg);
                 &.visible {
                     display: revert;
                 }
             }
         }
         & > nav {
-            background-color: colors.$util_bg_high;
-            border-bottom: 2px solid colors.$window_outline;
+            background-color: var(--bg-high);
+            border-bottom: 2px solid var(--window-outline);
             padding: .2em 0;
             width: 100%;
             box-sizing: border-box;
@@ -78,21 +78,22 @@ const components = loadComponents(import.meta.glob('./about_componenets/*', { ea
                 padding: 0;
                 width: 100%;
                 & > span {
-                    color: colors.$util_border;
+                    color: var(--util-border);
                 }
                 & > li {
                     font-weight: 700;
                     padding: 0 .4em;
                     & > button {
-                        border: 2px solid colors.$util_border;
-                        background-color: colors.$util_bg_highest;
-                        color: colors.$util_fg;
+                        border: 2px solid var(--border);
+                        background-color: var(--bg-highest);
+                        color: var(--util-fg);
                         user-select: none;
                         cursor: pointer;
                         transition: .2s;
                         &:hover {
                             animation: bounce 0.5s ease forwards;
-                            background-color: color.adjust(colors.$util_bg_highest, $lightness: 5%)
+                            background-color: var(--bg-pressed);
+                            border-color: var(--border-pressed);
                         }
                     }
                 }
