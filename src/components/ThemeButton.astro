@@ -7,7 +7,7 @@
     const btn = document.getElementById("theme-switch") as HTMLInputElement;
     const label = document.getElementById("theme-icon") as HTMLElement;
 
-    function applyTheme(theme: string): null {
+    function applyTheme(theme: string): void {
         document.documentElement.classList.remove("light", "dark");
         document.documentElement.classList.add(theme);
         label.innerText = `${theme}_mode`
@@ -16,14 +16,14 @@
         btn.checked = theme === "light";
     }
 
-    function initTheme(): null {
+    function initTheme(): void {
         const savedTheme = localStorage.getItem("theme");
         const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
         if (savedTheme) {
             applyTheme(savedTheme);
         } else {
-            applyTheme(systemPrefersDark ? "light" : "dark");
+            applyTheme(systemPrefersDark ? "dark" : "light");
         }
     }
 
