@@ -2,15 +2,20 @@
 import { defineConfig } from 'astro/config';
 
 import mdx from '@astrojs/mdx';
+import tailwindcss from "@tailwindcss/vite";
 
-// https://astro.build/config
-//
 export default defineConfig({
-  site: 'https://ec2854.fish',
-  integrations: [mdx()],
+    site: 'https://ec2854.fish',
+    integrations: [mdx()],
     markdown: {
         shikiConfig: {
-            theme: 'github-light',
+            themes: {
+                light: 'github-light',
+                dark: 'catppuccin-mocha',
+            },
         }
-    }
+    },
+    vite: {
+        plugins: [tailwindcss()],
+    },
 })

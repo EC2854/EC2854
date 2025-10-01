@@ -1,137 +1,26 @@
 ---
 const { name, id } = Astro.props;
 ---
-<div id={id} class="window">
-    <div>
-        <header>
-            <div>
-            <h1>{name}</h1>
-            <nav>
-                <button id={`${id}-maximize`} class="button-maximize">fullscreen</button>
-                <button id={`${id}-close`} class="button-close">close</button>
-            </nav>
-            </div>
-        </header>
-        <section>
-            <slot />
-        </section>
-    </div>
+<div id={id} class="window opacity-0 pointer-events-none fixed top-[100px] left-[100px] w-[800px] h-[480px] border-2 border-[var(--window-outline)] shadow-black shadow-md/30 flex [&.visible]:pointer-events-auto [&.visible]:opacity-100">
+  <div class="flex flex-col flex-grow h-full box-border border-6 border-[var(--window-border)]">
+    <header class="border-b-6 border-[var(--window-border)] cursor-move">
+      <div class="flex items-center justify-start bg-gradient-to-r from-[var(--window-header)] to-[var(--window-header-light)] border-2 border-[var(--window-outline)] text-[var(--fg)] px-2 py-1 font-semibold select-none">
+        <h1 class="text-xl m-0 select-none">{name}</h1>
+        <nav class="ml-auto flex items-center">
+          <button id={`${id}-maximize`} class="icon ml-2 w-7 h-7 cursor-pointer transition-all shadow-md bg-[var(--maximize)] border-2 border-[var(--maximize-fg)] text-[var(--maximize-fg)] hover:bg-[var(--maximize-pressed)] hover:border-[var(--maximize-fg-pressed)] hover:text-[var(--maximize-fg-pressed)] hover:animate-[tiltBounce_0.5s_ease_forwards]">
+            fullscreen
+          </button>
+          <button id={`${id}-close`} class="icon ml-2 w-7 h-7 cursor-pointer transition-all shadow-md bg-[var(--close)] border-2 border-[var(--close-fg)] text-[var(--close-fg)] hover:bg-[var(--close-pressed)] hover:border-[var(--close-fg-pressed)] hover:text-[var(--close-fg-pressed)] hover:animate-[tiltBounce_0.5s_ease_forwards]">
+            close
+          </button>
+        </nav>
+      </div>
+    </header>
+    <section class="flex flex-1 border-2 border-[var(--window-outline)] p-0 bg-[var(--bg)] text-[var(--fg)] h-full w-full box-border min-h-0">
+      <slot />
+    </section>
+  </div>
 </div>
-
-<style lang="scss">
-    @use "../styles/_animations.scss";
-    @use "../styles/_colors.scss";
-    @use "../styles/_fonts.scss";
-    @use "sass:color";
-
-    .window {
-        position: fixed;
-        top: 100px;
-        left: 100px;
-        width: 800px;
-        height: 480px;
-        border: 2px solid var(--window-outline);
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        box-sizing: border-box;
-        visibility: hidden;
-        opacity: 0;
-        transform: translateY(20px);
-        pointer-events: none;
-        display: flex;
-        &.visible {
-            pointer-events: all;
-            visibility: visible;
-            opacity: 1;
-            transform: translateY(0);
-            transition-delay: 0s;
-        }
-        & > div {
-            display: flex;
-            flex-grow: 1;
-            height: 100%;
-            box-sizing: border-box;
-
-            flex-direction: column;
-            border: 5px solid var(--window-border);
-        }
-    }
-    header {
-        border-bottom: 5px solid var(--window-border);
-        cursor: move;
-        & > div {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            background: linear-gradient(to right, var(--window-header) 70%, var(--window-header-light));
-            border: 2px solid var(--window-outline);
-            color: var(--fg);
-            padding: .2rem .5rem;
-            font-weight: 600;
-            user-select: none;
-            & > * {
-                display: flex;
-                align-items: center;
-            }
-            & > h1 {
-                font-size: 1.5rem;
-                margin: 0;
-                pointer-events: none;
-                user-select: none;
-            }
-            & > nav {
-                margin-left: auto;
-                & > button {
-                    font-family: 'Material Icons', sans-serif;
-                    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-                    font-weight: 900;
-
-                    margin-left: .4rem;
-                    height: 1.8rem;
-                    width: 1.8rem;
-                    transition: .1s;
-                    cursor: pointer;
-                    &:hover {
-                        animation: bounce 0.5s ease forwards;
-                    }
-                }
-                & > .button- {
-                    &maximize {
-                        background-color: var(--maximize);
-                        border: 2px solid var(--maximize-fg);
-                        color: var(--maximize-fg);
-                        &:hover {
-                            background-color: var(--maximize-pressed);
-                            border: 2px solid var(--maximize-fg-pressed);
-                            color: var(--maximize-fg-pressed);
-                        }
-                    }
-                    &close {
-                        background-color: var(--close);
-                        border: 2px solid var(--close-fg);
-                        color: var(--close-fg);
-                        &:hover {
-                            background-color: var(--close-pressed);
-                            border: 2px solid var(--close-fg-pressed);
-                            color: var(--close-fg-pressed);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    section {
-        flex: 1;
-        border: 2px solid var(--window-outline);
-        padding: 0;
-        background: var(--bg);
-        color: var(--fg);
-        height: 100%;
-        width: 100%;
-        display: flex;
-        box-sizing: border-box;
-        min-height: 0;
-    }
-</style>
 
 <script is:inline define:vars={{ id }}>
     const el = document.getElementById(id);

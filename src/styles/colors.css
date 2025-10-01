@@ -1,0 +1,107 @@
+:root.light {
+    --wall: #F9E2FD;
+    --wall-border: #e9b2eD;
+    --wall-light: #ffebff;
+
+    --fg: #4D21CB;
+    --h1: #409fd5;
+    --h2: #ea76cb;
+    --h3: #a839ef;
+    --italic: #a839ef;
+    --bold: #ea76cb;
+    --link: #409fd5;
+
+    --bg: #FDF7FD;
+
+    --bg-high: #fdfdfd;
+    --bg-highest: #fdeffd;
+    --border: #f6e0f8;
+
+    --bg-pressed: #f6e0f8;
+    --fg-pressed: #5D21DB;
+    --border-pressed: #ffcfff;
+
+    --window-header: #efcfef;
+    --window-header-light: #f3f1f7;
+    --window-border: #90f3e1;
+    --window-outline: var(--fg);
+
+    --close: #f38ba8;
+    --close-fg: #d01549;
+    --close-pressed: #f7a2b8;
+    --close-fg-pressed: #cc6d7e;
+
+    --maximize: #a6e3a1;
+    --maximize-fg: #40b536;
+    --maximize-pressed: #b6eab3;
+    --maximize-fg-pressed: #85b981;
+
+    --bar-bg: #f3e1f7;
+    --bar-bg-light: #ffcfff;
+    --bar-fg: #d390e2;
+    --bar-pressed: #d390e2;
+    --bar-pressed-light: #e3b9ec;
+    --bar-border: #cba0d1;
+
+    --bar-button: #efcfef;
+    --bar-button-fg: #d390e2;
+    --bar-button-pressed: #ffcfff;
+    --bar-button-fg-pressed: #e3a0e2;
+}
+
+:root.dark {
+    --wall: #1b1424;
+    --wall-border: #34263c;
+    --wall-light: #0d0d14;
+
+    --fg: #ac3231;
+    --h1: #007373;
+    --h2: #009691;
+    --h3: #2abf90;
+    --italic: #00a6a1;
+    --bold: #dc4241;
+    --link: #007383;
+
+    --bg: #1b1424;
+
+    --bg-high: #2c1d34;
+    --bg-highest: #34263c;
+    --border: #52263e;
+
+    --bg-pressed: #52263e;
+    --fg-pressed: #bc4241;
+    --border-pressed: #72263e;
+
+    --window-header: #34263c;
+    --window-header-light: #1b1424;
+    --window-border: #52263c;
+    --window-outline: #72263e;
+
+    --close: #601539;
+    --close-fg: #ac3231;
+    --close-pressed: #902549;
+    --close-fg-pressed: #dc4241;
+
+    --maximize: #007661;
+    --maximize-fg: #2abf90;
+    --maximize-pressed: #00a691;
+    --maximize-fg-pressed: #3adfb0;
+
+    --bar-bg: #1b1424;
+    --bar-bg-light: #34263c;
+    --bar-fg: #72263e;
+    --bar-pressed: #ac3231;
+    --bar-pressed-light: #52263e;
+    --bar-border: #52263e;
+
+    --bar-button: #34263c;
+    --bar-button-fg: #72263e;
+    --bar-button-pressed: #52263e;
+    --bar-button-fg-pressed: #92164e;
+}
+
+.dark .astro-code,
+.dark .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+}

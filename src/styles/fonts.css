@@ -1,0 +1,6 @@
+@import '@fontsource/material-icons';
+@import '@fontsource/ibm-plex-mono';
+
+* {
+  font-family: 'IBM Plex Mono', monospace;
+}

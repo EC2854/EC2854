@@ -1,5 +1,5 @@
 # theme
-[ ] dark theme
+[x] dark theme
 [ ] add consistant images to projects
 
 # utils
@@ -9,7 +9,7 @@
 [ ] make bio and links
 
 # qol
-[ ] double click to maximize
-[ ] size restore
+[x] double click to maximize
+[x] size restore
 [ ] link aware windows
 [ ] click outside menu to close

@@ -1,106 +1,47 @@
 ---
-
 export const metadata = {
-    id: 'about',
-    name: 'About Me',
-    icon: 'waving_hand',
+  id: 'about',
+  name: 'About Me',
+  icon: 'waving_hand',
 };
 
 function loadComponents(glob) {
-    return Object.entries(glob).map(([path, mod]) => {
-        const metadata = mod.metadata ?? {};
-        return {
-            name: metadata.name ?? 'Unnamed',
-            id: metadata.id ?? 'id',
-            Component: mod.default,
-        };
-    });
+  return Object.entries(glob).map(([path, mod]) => {
+    const metadata = mod.metadata ?? {};
+    return {
+      name: metadata.name ?? 'Unnamed',
+      id: metadata.id ?? 'id',
+      Component: mod.default,
+    };
+  });
 }
 const components = loadComponents(import.meta.glob('./about_componenets/*', { eager: true }));
-
 ---
 
-<div class="about">
-    <nav> 
-        <ul>
-            {components.map(({ id, name }) => (
-                <li ><button toggle-id={id}>{name}</button></li>
-            ))}
-        </ul>
-    </nav>
-    <section>
-        {components.map(({ id, Component }) => (
-            <article class="mdx" id={id}>
-                <Component />
-            </article>
-        ))}
-    </section>
+<div class="about flex flex-col items-start h-full w-full">
+  <nav class="w-full bg-[var(--bg-high)] border-b-2 border-[var(--window-outline)] py-1">
+    <ul class="flex items-center justify-start list-none m-0 p-0 w-full">
+      {components.map(({ id, name }) => (
+        <li class="font-semibold px-2">
+          <button
+            toggle-id={id}
+            class="border-2 border-[var(--border)] bg-[var(--bg-highest)] text-[var(--util-fg)] text-sm px-3 py-[.25rem] cursor-pointer transition duration-200 select-none hover:animate-[tiltBounce_0.5s_ease_forwards] hover:bg-[var(--bg-pressed)] hover:border-[var(--border-pressed)]"
+          >
+            {name}
+          </button>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <section class="p-1 px-4 w-full overflow-y-auto">
+    {components.map(({ id, Component }) => (
+      <article id={id} class="mdx hidden text-[var(--fg)] [&.visible]:block">
+        <Component />
+      </article>
+    ))}
+  </section>
 </div>
-
-<style lang="scss">
-    @use "../../styles/_animations.scss";
-    @use "../../styles/_colors.scss";
-    @use "../../styles/_fonts.scss";
-    @use "sass:color";
-
-    .about {
-        align-items: start;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        width: 100%;
-        & > section {
-            padding: .2em 1em;
-            width: 100%;
-            box-sizing: border-box;
-            overflow-y: auto;
-            & > article {
-                display: none;
-                color: var(--fg);
-                &.visible {
-                    display: revert;
-                }
-            }
-        }
-        & > nav {
-            background-color: var(--bg-high);
-            border-bottom: 2px solid var(--window-outline);
-            padding: .2em 0;
-            width: 100%;
-            box-sizing: border-box;
-            & > ul {
-                display: flex;
-                height: 100%;
-                align-items: center;
-                justify-content: start;
-                list-style: none;
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                & > span {
-                    color: var(--util-border);
-                }
-                & > li {
-                    font-weight: 700;
-                    padding: 0 .4em;
-                    & > button {
-                        border: 2px solid var(--border);
-                        background-color: var(--bg-highest);
-                        color: var(--util-fg);
-                        user-select: none;
-                        cursor: pointer;
-                        transition: .2s;
-                        &:hover {
-                            animation: bounce 0.5s ease forwards;
-                            background-color: var(--bg-pressed);
-                            border-color: var(--border-pressed);
-                        }
-                    }
-                }
-            }
-        }
-    }
-</style>
 
 <script>
     const nav = document.querySelector(".about nav") as HTMLElement;

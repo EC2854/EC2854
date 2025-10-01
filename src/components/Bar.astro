@@ -1,4 +1,6 @@
 ---
+import ThemeButton from './ThemeButton.astro';
+
 function loadModules(glob) {
     return Object.entries(glob).map(([path, mod]) => {
         const metadata = mod.metadata ?? {};
@@ -13,155 +15,50 @@ const utils = loadModules(import.meta.glob('../components/utils/*.astro', { eage
 const info = loadModules(import.meta.glob('../components/info/*.astro', { eager: true }));
 ---
 
-<div class="bar">
-    <nav>
-        <ul>
+<div class="bar fixed bottom-0 left-0 right-0 z-3 pointer-events-none">
+    <nav
+        class=" w-[360px] h-[50vh] bg-gradient-to-t from-[var(--bar-bg)] to-[var(--bar-bg-light)] px-1 py-4 opacity-0 translate-y-100 pointer-events-none border-[var(--bar-border)] border-t-2 border-r-2 shadow-[10px_-10px_15px_rgba(0,0,0,0.15)] transition-all duration-300 [&.visible]:opacity-100 [&.visible]:translate-y-0 [&.visible]:pointer-events-auto">
+        <ul class="list-none p-0">
             {info.map(({ id, name, icon }) => (
                 <li>
-                    <button toggle-id={id}>
-                        <span>{icon}</span>
+                    <button
+                        toggle-id={id}
+                        class="w-full text-left text-xl px-3 py-1 my-1 duration-200 cursor-pointer text-[var(--fg)] bg-transparent border-0 hover:bg-gradient-to-r hover:from-[var(--bar-pressed-light)] hover:to-[transparent] hover:border-l-12 hover:border-l-[var(--bar-pressed)]">
+                        <span class="text-xl icon text-[var(--bar-fg)] mr-2">{icon}</span>
                         {name}
                     </button>
                 </li>
             ))}
-            <hr>
+            <hr class="border-t-2 border-[var(--bar-border)] my-2" />
             {utils.map(({ id, name, icon }) => (
                 <li>
-                    <button toggle-id={id}>
-                        <span>{icon}</span>
+                    <button
+                        toggle-id={id}
+                        class="w-full text-left text-xl px-3 py-1 my-1 duration-200 cursor-pointer text-[var(--fg)] bg-transparent border-0 hover:bg-gradient-to-r hover:from-[var(--bar-pressed-light)] hover:to-[transparent] hover:border-l-12 hover:border-l-[var(--bar-pressed)]">
+                        <span class="text-xl icon text-[var(--bar-fg)] mr-2">{icon}</span>
                         {name}
                     </button>
                 </li>
             ))}
         </ul>
     </nav>
-    <header>
-        <button id="logo">
-            <span>rocket_launch</span>
-            <p> Start</p>
+
+    <header
+        class="pointer-events-auto bg-gradient-to-r from-[var(--bar-bg)] to-[var(--bar-bg-light)] text-[var(--fg)] border-t-2 border-[var(--bar-border)] p-2 flex items-center justify-start h-[48px] shadow-[0_-10px_15px_rgba(0,0,0,0.15)]">
+        <button
+            id="logo"
+            class="flex items-center h-[32px] px-3 text-l cursor-pointer bg-[var(--bar-button)] text-[var(--bar-button-fg)] border-2 border-[var(--bar-button-fg] shadow-black shadow-md/30 font-bold hover:bg-[var(--bar-button-pressed)] hover:text-[var(--bar-button-fg-pressed)] hover:border-[var(--bar-button-fg-pressed)] hover:animate-[tiltBounce_0.5s_ease_forwards]">
+            <span class="icon text-l mr-1">rocket_launch</span>
+            <p>Start</p>
         </button>
-        <button id="clock"></button>
+
+        <ThemeButton />
+        <button
+            id="clock"
+            class="ml-3 flex items-center h-[32px] px-3 text-l cursor-pointer bg-[var(--bar-button)] text-[var(--bar-button-fg)] border-2 border-[var(--bar-button-fg] shadow-black shadow-md/30 font-bold hover:bg-[var(--bar-button-pressed)] hover:text-[var(--bar-button-fg-pressed)] hover:border-[var(--bar-button-fg-pressed)] hover:animate-[tiltBounce_0.5s_ease_forwards]">
+        </button>
     </header>
 </div>
-
-<style lang="scss">
-    @use "../styles/_animations.scss";
-    @use "../styles/_fonts.scss";
-
-    .bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 9999;
-      pointer-events: none;
-    }
-
-    header {
-      pointer-events: all;
-      background: var(--bar-bg);
-      color: var(--fg);
-      border-top: 3px solid var(--bar-border);
-      padding: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      height: 48px;
-      box-sizing: border-box;
-      z-index: 10;
-      font-weight: 600;
-      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-
-      & > * {
-        display: flex;
-        align-items: center;
-      }
-
-      & > #logo,
-      & > #clock {
-        height: 32px;
-        padding: 0 .8rem;
-        font-size: 1.05rem;
-        box-sizing: border-box;
-        cursor: pointer;
-        background-color: var(--bar-button);
-        color: var(--bar-button-fg);
-        border: 2px solid var(--bar-button-fg);
-        box-shadow: rgba(0, 0, 0, 0.1) 1.95px 1.95px 2.6px;
-
-        &:hover {
-          animation: bounce 0.5s ease forwards;
-          background-color: var(--bar-button-pressed);
-          color: var(--bar-button-fg-pressed);
-          border-color: var(--bar-button-fg-pressed);
-        }
-
-        & > span {
-          font-family: 'Material Icons', sans-serif;
-          font-size: 1.1rem;
-        }
-      }
-
-      & > #clock {
-        margin-left: auto;
-      }
-    }
-
-    nav {
-      width: 360px;
-      height: 50vh;
-      background: var(--bar-bg);
-      color: var(--fg);
-      visibility: hidden;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: 0.2s;
-      padding: 0.2em 1em;
-      border: 3px solid var(--bar-border);
-      border-bottom: none;
-      box-shadow: 0px -3px 5px rgba(0, 0, 0, 0.1);
-
-      &.visible {
-        pointer-events: all;
-        visibility: visible;
-        opacity: 1;
-        transform: translateY(0);
-        transition-delay: 0s;
-      }
-
-      & > ul {
-        padding: 0;
-        list-style-type: none;
-
-        & > hr {
-          border: 1px solid var(--bar-border);
-        }
-
-        & > li > button {
-          width: 100%;
-          color: var(--fg);
-          background: none;
-          border: none;
-          margin: 0.2em 0;
-          transition: 0.16s;
-          font-size: 1.3em;
-          text-align: left;
-          padding: 0.2em 0.8em;
-          cursor: pointer;
-
-          & > span {
-            font-family: 'Material Icons', sans-serif;
-            color: var(--bar-fg);
-          }
-
-          &:hover {
-            border-left: 0.8em solid var(--bar-pressed);
-            background: linear-gradient(to right, var(--bar-pressed-light), var(--bar-bg));
-          }
-        }
-      }
-    }
-</style>
 
 <script>
     const clock = document.getElementById("clock") as HTMLButtonElement | null;

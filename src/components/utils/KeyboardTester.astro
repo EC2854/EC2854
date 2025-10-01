@@ -6,82 +6,62 @@ export const metadata = {
 };
 ---
 
-<div class="keyboard">
-    <div id="key-buttons">
-        <div id="key-main"></div>
-        <div id="key-nav"></div>
-        <div id="key-num"></div>
+<div class="keyboard flex items-center justify-center w-full h-full">
+    <div id="key-buttons" class="flex p-4">
+        <div id="key-main" class="mx-1]"></div>
+        <div id="key-nav" class="mx-1"></div>
+        <div id="key-num" class="mx-1"></div>
     </div>
 </div>
 
-<style lang="scss" is:global>
-    @use "../../styles/_colors.scss";
-    @use "../../styles/_fonts.scss";
-    @use "sass:color";
-    .keyboard {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-        & > div {
-            display: flex;
-            padding: 1em;
-            & > * {
-                margin: 0 .2em; 
-            }
-            & > #key-main {
-                & > .alphanumeric {
-                    display: grid;
-                    grid-template-columns: repeat(14, 1fr);
-                    gap: .2em;
-                }
-                & > .function_keys {
-                    display: flex;
-                    width: 100%;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom:.4em;
-                    & > * {
-                        width: 100%;
-                    }
-                }
-            }
-            & > #key-nav {
-                display: flex;
-                flex-direction:column;
-                & > .system {
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: .2em;
-                }
-                & > .arrows_top {
-                    margin-top: auto;
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: .2em;
-                }
-                & > .arrows_bottom {
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: .2em;
-                }
-            }
-            & > #key-num {
-                display: flex;
-                & > .numpad {
-                    display: grid;
-                    grid-template-columns: repeat(4, 1fr);
-                    gap: .2em;
-                }
-            }
-
+<style is:global>
+    #key-main {
+        & > .alphanumeric {
+            display: grid;
+            grid-template-columns: repeat(14, 1fr);
+            gap: .2em;
         }
-
+        & > .function_keys {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom:.4em;
+            & > * {
+                width: 100%;
+            }
+        }
+    }
+    #key-nav {
+        display: flex;
+        flex-direction:column;
+        & > .system {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .2em;
+        }
+        & > .arrows_top {
+            margin-top: auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .2em;
+            margin-bottom: .2em;
+        }
+        & > .arrows_bottom {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .2em;
+        }
+    }
+    #key-num {
+        display: flex;
+        & > .numpad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: .2em;
+        }
     }
     .key {
-        margin: .1em;
         padding: .2em .8em;
         border: 1px solid var(--border);
         background-color: var(--bg-highest);
@@ -103,11 +83,11 @@ export const metadata = {
         }
     }
     #key_empty {
-        background-color: none;
+        background-color: transparent;
         border: none;
         box-shadow: none;
     }
-    .hidden {
+    .hidden_section {
         display: none !important;
     }
 </style>
@@ -327,13 +307,13 @@ export const metadata = {
             const width = entry.contentRect.width;
 
             if (width < 1100) {
-                nav.classList.add('hidden');
+                nav.classList.add('hidden_section');
             } else if (width < 1300) {
-                num.classList.add('hidden');
-                nav.classList.remove('hidden');
+                num.classList.add('hidden_section');
+                nav.classList.remove('hidden_section');
             } else {
-                nav.classList.remove('hidden');
-                num.classList.remove('hidden');
+                nav.classList.remove('hidden_section');
+                num.classList.remove('hidden_section');
             }
         }
     });

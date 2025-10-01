@@ -1,0 +1,36 @@
+<input type="checkbox" id="theme-switch" class="hidden peer">
+<label for="theme-switch" id="theme-icon"
+    class="icon flex items-center justify-center select-none peer-checked:bg-[var(--bar-button-pressed)] peer-checked:text-[var(--bar-button-fg-pressed)] peer-checked:border-[var(--bar-button-fg-pressed)] duration-300 ml-auto h-[32px] aspect-square cursor-pointer bg-[var(--bar-button)] text-[var(--bar-button-fg)] border-2 border-[var(--bar-button-fg)] shadow-black shadow-md/30 hover:animate-[tiltBounce_0.5s_ease_forwards] hover:bg-[var(--bar-button-pressed)] hover:text-[var(--bar-button-fg-pressed)] hover:border-[var(--bar-button-fg-pressed)]">
+</label>
+
+<script>
+    const btn = document.getElementById("theme-switch") as HTMLInputElement;
+    const label = document.getElementById("theme-icon") as HTMLElement;
+
+    function applyTheme(theme: string): null {
+        document.documentElement.classList.remove("light", "dark");
+        document.documentElement.classList.add(theme);
+        label.innerText = `${theme}_mode`
+
+        localStorage.setItem("theme", theme);
+        btn.checked = theme === "light";
+    }
+
+    function initTheme(): null {
+        const savedTheme = localStorage.getItem("theme");
+        const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+        if (savedTheme) {
+            applyTheme(savedTheme);
+        } else {
+            applyTheme(systemPrefersDark ? "light" : "dark");
+        }
+    }
+
+    btn.addEventListener("change", () => {
+        const newTheme = btn.checked ? "light" : "dark";
+        applyTheme(newTheme);
+    });
+
+    initTheme();
+</script>

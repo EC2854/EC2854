@@ -1,8 +1,9 @@
-<!doctype html>
 ---
 import Bar from "../components/Bar.astro";
+import "../styles/main.css";
 ---
 
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
@@ -10,14 +11,9 @@ import Bar from "../components/Bar.astro";
 		<title>EC2854</title>
         <link rel="shortcut icon" href="/favicon.gif" type="image/png">
 	</head>
-    <body>
-        <div class="wall"></div>
+    <body class="w-screen h-screen m-0 p-0 text-[var(--fg)] overflow-hidden">
+        <div class="wall relative w-full h-screen animate-[gradientShift_20s_infinite]"></div>
         <Bar />
-		<slot />
-	</body>
+        <slot />
+    </body>
 </html>
-
-<style lang="scss" is:global>
-    @use "../styles/main.scss";
-    @use "../styles/_article.scss";
-</style>

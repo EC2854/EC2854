@@ -10,10 +10,6 @@ export const metadata = {
 </div>
 
 <style>
-    @use "../../styles/_animations.scss";
-    @use "../../styles/_colors.scss";
-    @use "../../styles/_fonts.scss";
-    @use "sass:color";
     .color_picker {
         display: flex;
         flex-direction: column;
